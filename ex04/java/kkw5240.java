@@ -2,6 +2,11 @@ package ex04.java;
 
 import java.util.Scanner;
 
+/**
+ * 작성자 : 김규완
+ * 실행방법 : java kkw5240.class
+ * 주의사항 : 기본풀이까지만 했습니다.
+ */
 class Ex04 {
     private static Scanner scanner;
 
