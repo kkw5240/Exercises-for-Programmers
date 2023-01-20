@@ -15,6 +15,8 @@ class Ex01 {
         if (isScanned(scanner)) {
             printHello(scanner.next());
         }
+
+        scanner.close();
     }
 
     private static void printPrompt() {
