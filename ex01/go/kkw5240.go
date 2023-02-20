@@ -20,46 +20,18 @@ func main() {
 
 func promptInputName(name *string) {
 	fmt.Print("What is your name? ")
-	fmt.Scanln(name)
+	_, err := fmt.Scanln(name)
+	if err != nil {
+		return
+	}
 }
 
 func buildMessage(name string) string {
 	var hello = fmt.Sprintf("Hello, %s", name)
-	var greeting = getGreetingType(name).greeting()
+	var greeting = getGreeting(indexOfGreeting(name))
 
 	return fmt.Sprintf("%s, %s\n", hello, greeting)
 }
-
-type GreetingType int
-
-const (
-	GREETING_TYPE_A GreetingType = iota
-	GREETING_TYPE_B
-	GREETING_TYPE_C
-	GREETING_TYPE_D
-	GREETING_TYPE_E
-	GREETING_TYPE_F
-	GREETING_TYPE_G
-	GREETING_TYPE_H
-	GREETING_TYPE_I
-	GREETING_TYPE_J
-	GREETING_TYPE_K
-	GREETING_TYPE_L
-	GREETING_TYPE_M
-	GREETING_TYPE_N
-	GREETING_TYPE_O
-	GREETING_TYPE_P
-	GREETING_TYPE_Q
-	GREETING_TYPE_R
-	GREETING_TYPE_S
-	GREETING_TYPE_T
-	GREETING_TYPE_U
-	GREETING_TYPE_V
-	GREETING_TYPE_W
-	GREETING_TYPE_X
-	GREETING_TYPE_Y
-	GREETING_TYPE_Z
-)
 
 var characters = []string{
 	"A", "B", "C", "D", "E", "F", "G",
@@ -67,13 +39,13 @@ var characters = []string{
 	"Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
 }
 
-func getGreetingType(name string) GreetingType {
+func indexOfGreeting(name string) int {
 	for i, v := range characters {
 		if strings.ToUpper(string(name[0])) == v {
-			return GreetingType(i)
+			return i
 		}
 	}
-	return GreetingType(0)
+	return 0
 }
 
 var greetings = [...]string{
@@ -105,8 +77,8 @@ var greetings = [...]string{
 	"i never expected to see you here!",
 }
 
-func (t GreetingType) greeting() string {
-	return greetings[t]
+func getGreeting(i int) string {
+	return greetings[i]
 }
 
 func printMessage(message string) {
