@@ -21,4 +21,11 @@ func main() {
 	var message = fmt.Sprintf("%s says, \"%s.\"", person, quote)
 
 	fmt.Println(message)
+
+	var quoteMap = make(map[string]string)
+	quoteMap["quote"] = quote
+	quoteMap["person"] = person
+
+	var quotes []map[string]string
+	quotes = append(quotes, quoteMap)
 }
