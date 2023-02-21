@@ -7,7 +7,7 @@ import (
 /**
  * 작성자 : 김규완
  * 실행방법 : go kkw5240.go
- * 주의사항 : 기본풀이까지만 했습니다.
+ * 주의사항 : 도전과제까지 풀이했습니다.
  */
 func main() {
 	var quotes []map[string]string
