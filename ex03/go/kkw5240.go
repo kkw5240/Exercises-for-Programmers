@@ -8,24 +8,65 @@ import "fmt"
  * 주의사항 : 기본풀이까지만 했습니다.
  */
 func main() {
+	var quotes []*Quote
+
+	for {
+		quote := &Quote{
+			quote:  promptQuote(),
+			person: promptPerson(),
+		}
+		if !quote.Validate() {
+			return
+		}
+
+		quote.PrintQuote()
+
+		fmt.Println("\n==============================================")
+
+		quotes = append(quotes, quote)
+		for _, q := range quotes {
+			q.PrintQuote()
+		}
+	}
+}
+
+func promptQuote() string {
 	fmt.Print("What is the quote? ")
 
 	var quote string
-	fmt.Scanln(&quote)
+	_, err := fmt.Scanln(&quote)
+	if err != nil {
+		return ""
+	}
 
+	return quote
+}
+
+func promptPerson() string {
 	fmt.Print("Who said it? ")
 
 	var person string
-	fmt.Scanln(&person)
+	_, err := fmt.Scanln(&person)
+	if err != nil {
+		return ""
+	}
 
-	var message = fmt.Sprintf("%s says, \"%s.\"", person, quote)
+	return person
+}
 
-	fmt.Println(message)
+type Quote struct {
+	person string
+	quote  string
+}
 
-	var quoteMap = make(map[string]string)
-	quoteMap["quote"] = quote
-	quoteMap["person"] = person
+func (q *Quote) PrintQuote() {
+	fmt.Println(q.buildMessage())
+}
 
-	var quotes []map[string]string
-	quotes = append(quotes, quoteMap)
+func (q *Quote) buildMessage() string {
+	return fmt.Sprintf("%s says, \"%s.\"", q.person, q.quote)
+}
+
+func (q *Quote) Validate() bool {
+	return len(q.quote) > 0 && len(q.person) > 0
 }
