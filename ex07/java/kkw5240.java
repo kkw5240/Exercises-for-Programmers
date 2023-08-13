@@ -6,8 +6,19 @@ class Ex07 {
     private final static double SQUARE_FEET_TO_SQUARE_METER = 0.09290304;
 
     public static void main(String[] args) {
-        double length = promptLength();
-        double width = promptWidth();
+        double length = 0, width = 0;
+
+        Scanner scanner = new Scanner(System.in);
+        try {
+            length = promptLength(scanner);
+            width = promptWidth(scanner);
+
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            
+        } finally {
+            scanner.close();
+        }
 
         double areaSquareFeet = getArea(length, width);
         double areaSquareMeter = convertFeetToMeter(areaSquareFeet);
@@ -20,24 +31,16 @@ class Ex07 {
                 %n""", length, width, areaSquareFeet, areaSquareMeter);
     }
 
-    private static double promptLength() {
-        Scanner scanner = new Scanner(System.in);
-
+    private static double promptLength(Scanner scanner) {
         System.out.print("What is the length of the room in feet? ");
         double length = scanner.nextDouble();
-
-        scanner.close();
 
         return length;
     }
 
-    private static double promptWidth() {
-        Scanner scanner = new Scanner(System.in);
-
+    private static double promptWidth(Scanner scanner) {
         System.out.print("What is the width of the room in feet? ");
         double width = scanner.nextDouble();
-
-        scanner.close();
 
         return width;
     }
