@@ -46,7 +46,9 @@ func promptLength() (float32, error) {
 
 func buildMessage(length float32, width float32) string {
 	return fmt.Sprintf(
-		"You entered dimensions of %.1f feet by %.1f feet The area is %.3f square feet %.3f square meters.",
+		"You entered dimensions of %.1f feet by %.1f feet "+
+			"\nThe area is %.3f square feet "+
+			"\n%.3f square meters.",
 		length,
 		width,
 		calcArea(length, width),
