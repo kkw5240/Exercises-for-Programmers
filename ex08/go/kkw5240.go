@@ -5,95 +5,127 @@ import (
 )
 
 func main() {
-	people, err := promptHowManyPeople()
-	if err != nil {
-		return
-	}
+	pizzaParty := planPizzaParty()
 
-	pizzas, err := promptHowManyPizzas()
-	if err != nil {
-		return
-	}
-
-	pieces, err := promptHowManyPieces()
-	if err != nil {
-		return
-	}
-
-	introducePizzaParty(people, pizzas)
-
-	pizzaParty := &PizzaParty{
-		people: people,
-		pizzas: pizzas,
-		pieces: pieces,
-	}
+	introducePizzaParty(pizzaParty)
 
 	showCalcSharedPieces(pizzaParty)
 
 	showLeftPieces(pizzaParty)
 }
 
-func promptHowManyPeople() (int, error) {
-	fmt.Printf("How many people? ")
+func planPizzaParty() *PizzaParty {
+	return &PizzaParty{
+		people: Number(promptHowManyPeople()),
+		pizzas: Number(promptHowManyPizzas()),
+		pieces: Number(promptHowManyPieces()),
+	}
+}
 
+func promptHowManyPeople() int {
 	var people int
-	_, err := fmt.Scanln(&people)
-	if err != nil {
-		fmt.Printf(err.Error())
-		return 0, err
-	}
 
-	return people, nil
+	for {
+		fmt.Printf("How many people? ")
+
+		_, err := fmt.Scanln(&people)
+		if err != nil {
+			fmt.Printf("Please input number.(%+v)\n", err.Error())
+			continue
+		}
+
+		return people
+	}
 }
 
-func promptHowManyPizzas() (int, error) {
-	fmt.Printf("How many pizzas do you have? ")
-
+func promptHowManyPizzas() int {
 	var pizzas int
-	_, err := fmt.Scanln(&pizzas)
-	if err != nil {
-		fmt.Printf(err.Error())
-		return 0, err
-	}
 
-	return pizzas, nil
+	for {
+		fmt.Printf("How many pizzas do you have? ")
+
+		_, err := fmt.Scanln(&pizzas)
+		if err != nil {
+			fmt.Printf("Please input number.(%+v)\n", err.Error())
+			continue
+		}
+
+		return pizzas
+	}
 }
 
-func promptHowManyPieces() (int, error) {
-	fmt.Printf("How many pieces are in a pizza? ")
-
+func promptHowManyPieces() int {
 	var pieces int
-	_, err := fmt.Scanln(&pieces)
-	if err != nil {
-		fmt.Printf(err.Error())
-		return 0, err
-	}
 
-	return pieces, nil
+	for {
+		fmt.Printf("How many pieces are in a pizza? ")
+
+		_, err := fmt.Scanln(&pieces)
+		if err != nil {
+			fmt.Printf("Please input number.(%+v)\n", err.Error())
+			continue
+		}
+
+		return pieces
+	}
 }
 
-func introducePizzaParty(people int, pizzas int) {
-	fmt.Printf("%d people with %d pizzas\n", people, pizzas)
+func introducePizzaParty(pizzaParty *PizzaParty) {
+	fmt.Printf("\n%d people with %d pizzas\n", pizzaParty.people, pizzaParty.pizzas)
 }
 
 func showCalcSharedPieces(pizzaParty *PizzaParty) {
-	fmt.Printf("Each person gets %d pieces of pizza.\n", pizzaParty.CalcPieces())
+	sharedPieces := pizzaParty.CalcPieces()
+
+	text := fmt.Sprintf("Each person gets %d piece", sharedPieces)
+
+	if Number(sharedPieces).Matches() {
+		text += fmt.Sprintf("s")
+	}
+
+	text += fmt.Sprintf(" of pizza.\n")
+
+	fmt.Printf(text)
 }
 
 func showLeftPieces(pizzaParty *PizzaParty) {
-	fmt.Printf("There are %d leftover pieces.\n", pizzaParty.CalcLeftover())
+	leftoverPieces := Number(pizzaParty.CalcLeftover())
+
+	text := fmt.Sprintf("There ")
+
+	if leftoverPieces.Matches() {
+		text += "are "
+	} else {
+		text += "is "
+	}
+
+	text += fmt.Sprintf("%d leftover piece", leftoverPieces)
+
+	if leftoverPieces.Matches() {
+		text += fmt.Sprintf("s")
+	}
+
+	text += fmt.Sprintf(".\n")
+
+	fmt.Printf(text)
 }
 
 type PizzaParty struct {
-	people int
-	pizzas int
-	pieces int
+	people Number
+	pizzas Number
+	pieces Number
 }
 
 func (t *PizzaParty) CalcPieces() int {
-	return t.pizzas * t.pieces / t.people
+	return int(t.pizzas * t.pieces / t.people)
 }
 
 func (t *PizzaParty) CalcLeftover() int {
-	return t.pizzas * t.pieces % t.people
+	return int(t.pizzas * t.pieces % t.people)
+}
+
+type Number int
+
+func (t Number) Matches() bool {
+	return t > 1
 }
